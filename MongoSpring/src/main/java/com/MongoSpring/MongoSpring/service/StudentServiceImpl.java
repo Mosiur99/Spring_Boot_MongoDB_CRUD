@@ -11,8 +11,12 @@ import java.util.Objects;
 @Service
 public class StudentServiceImpl implements StudentService {
 
+    private final StudentRepository studentRepository;
+
     @Autowired
-    private StudentRepository studentRepository;
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     @Override
     public void addStudent(Student student) {
@@ -30,12 +34,18 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public List<Student> getStudentsByAgeBetween(Integer minAge, Integer maxAge) {
+        return studentRepository.getStudentsByAgeBetween(minAge, maxAge);
+    }
+
+    @Override
     public void updateStudent(Student student) {
         Student data = studentRepository.findById(student.getRollNumber()).orElse(null);
 
-        if(Objects.nonNull(data)){
+        if(Objects.nonNull(data)) {
             data.setName(student.getName());
             data.setAddress(student.getAddress());
+            data.setAge(student.getAge());
             studentRepository.save(data);
         }
     }
@@ -43,5 +53,10 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public void deleteStudent(Integer id) {
         studentRepository.deleteById(id);
+    }
+
+    @Override
+    public Student getStudentByName(String name) {
+        return studentRepository.getStudentByName(name);
     }
 }

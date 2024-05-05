@@ -12,6 +12,10 @@ public interface StudentService {
 
     Student getStudent(Integer id);
 
+    Student getStudentByName(String name);
+
+    List<Student> getStudentsByAgeBetween(Integer minAge, Integer maxAge);
+
     void updateStudent(Student student);
 
     void deleteStudent(Integer id);
